@@ -1,0 +1,138 @@
+[
+  {
+    "link": "https://i.imgur.com/MDYhY0h.png",
+    "result": {
+      "predicted_disease": "Banana Panama Disease",
+      "confidence": "66.92%",
+      "class_probabilities": {
+        "Banana Black Sigatoka Disease": "0.00%",
+        "Banana Bract Mosaic Virus Disease": "0.00%",
+        "Banana Healthy Leaf": "0.00%",
+        "Banana Insect Pest Disease": "0.00%",
+        "Banana Moko Disease": "0.00%",
+        "Banana Panama Disease": "66.92%",
+        "Banana Yellow Sigatoka Disease": "33.08%"
+      }
+    },
+    "uploadedAt": "2025-10-01T17:10:10.241Z"
+  },
+  {
+    "link": "https://i.imgur.com/W9Uxboc.png",
+    "result": {
+      "predicted_disease": "Banana Bract Mosaic Virus Disease",
+      "confidence": "66.73%",
+      "class_probabilities": {
+        "Banana Black Sigatoka Disease": "0.00%",
+        "Banana Bract Mosaic Virus Disease": "66.73%",
+        "Banana Healthy Leaf": "0.00%",
+        "Banana Insect Pest Disease": "0.00%",
+        "Banana Moko Disease": "33.27%",
+        "Banana Panama Disease": "0.00%",
+        "Banana Yellow Sigatoka Disease": "0.00%"
+      }
+    },
+    "uploadedAt": "2025-10-01T17:22:47.017Z"
+  },
+  {
+    "link": "https://i.imgur.com/ab0aG17.jpeg",
+    "result": {
+      "predicted_disease": "Banana Moko Disease",
+      "confidence": "66.83%",
+      "class_probabilities": {
+        "Banana Black Sigatoka Disease": "0.00%",
+        "Banana Bract Mosaic Virus Disease": "0.00%",
+        "Banana Healthy Leaf": "0.00%",
+        "Banana Insect Pest Disease": "0.00%",
+        "Banana Moko Disease": "66.83%",
+        "Banana Panama Disease": "33.17%",
+        "Banana Yellow Sigatoka Disease": "0.00%"
+      }
+    },
+    "uploadedAt": "2025-10-01T17:34:58.114Z"
+  },
+  {
+    "link": "https://i.imgur.com/fARyrpy.png",
+    "result": {
+      "predicted_disease": "Banana Yellow Sigatoka Disease",
+      "confidence": "33.45%",
+      "class_probabilities": {
+        "Banana Black Sigatoka Disease": "0.00%",
+        "Banana Bract Mosaic Virus Disease": "33.14%",
+        "Banana Healthy Leaf": "0.00%",
+        "Banana Insect Pest Disease": "0.00%",
+        "Banana Moko Disease": "0.00%",
+        "Banana Panama Disease": "33.41%",
+        "Banana Yellow Sigatoka Disease": "33.45%"
+      }
+    },
+    "uploadedAt": "2025-10-01T17:55:01.302Z"
+  },
+  {
+    "link": "https://i.imgur.com/nw8iDg1.jpeg",
+    "result": {
+      "predicted_disease": "Banana Moko Disease",
+      "confidence": "67.03%",
+      "class_probabilities": {
+        "Banana Black Sigatoka Disease": "0.00%",
+        "Banana Bract Mosaic Virus Disease": "0.00%",
+        "Banana Healthy Leaf": "0.00%",
+        "Banana Insect Pest Disease": "0.00%",
+        "Banana Moko Disease": "67.03%",
+        "Banana Panama Disease": "32.97%",
+        "Banana Yellow Sigatoka Disease": "0.00%"
+      }
+    },
+    "uploadedAt": "2025-10-01T17:55:54.208Z"
+  },
+  {
+    "link": "https://i.imgur.com/mJoPvQG.png",
+    "result": {
+      "predicted_disease": "Banana Panama Disease",
+      "confidence": "100.00%",
+      "class_probabilities": {
+        "Banana Black Sigatoka Disease": "0.00%",
+        "Banana Bract Mosaic Virus Disease": "0.00%",
+        "Banana Healthy Leaf": "0.00%",
+        "Banana Insect Pest Disease": "0.00%",
+        "Banana Moko Disease": "0.00%",
+        "Banana Panama Disease": "100.00%",
+        "Banana Yellow Sigatoka Disease": "0.00%"
+      }
+    },
+    "uploadedAt": "2025-10-01T17:56:26.915Z"
+  },
+  {
+    "link": "https://i.imgur.com/x7aueyI.png",
+    "result": {
+      "predicted_disease": "Banana Moko Disease",
+      "confidence": "100.00%",
+      "class_probabilities": {
+        "Banana Black Sigatoka Disease": "0.00%",
+        "Banana Bract Mosaic Virus Disease": "0.00%",
+        "Banana Healthy Leaf": "0.00%",
+        "Banana Insect Pest Disease": "0.00%",
+        "Banana Moko Disease": "100.00%",
+        "Banana Panama Disease": "0.00%",
+        "Banana Yellow Sigatoka Disease": "0.00%"
+      }
+    },
+    "uploadedAt": "2025-10-01T17:57:48.907Z"
+  },
+  {
+    "link": "https://i.imgur.com/gTU27M2.jpeg",
+    "result": {
+      "predicted_disease": "Banana Moko Disease",
+      "confidence": "100.00%",
+      "class_probabilities": {
+        "Banana Black Sigatoka Disease": "0.00%",
+        "Banana Bract Mosaic Virus Disease": "0.00%",
+        "Banana Healthy Leaf": "0.00%",
+        "Banana Insect Pest Disease": "0.00%",
+        "Banana Moko Disease": "100.00%",
+        "Banana Panama Disease": "0.00%",
+        "Banana Yellow Sigatoka Disease": "0.00%"
+      }
+    },
+    "uploadedAt": "2025-10-01T17:58:29.313Z"
+  }
+]

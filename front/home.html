@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banana Disease Detection</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --primary-dark: #388E3C;
+      --secondary: #FFC107;
+      --light: #f9f9f9;
+      --dark: #333;
+      --gray: #777;
+      --light-gray: #e0e0e0;
+      --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--dark);
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: var(--primary-dark);
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    h1 i {
+      color: var(--secondary);
+    }
+    
+    .subtitle {
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+    
+    .upload-section {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .upload-area {
+      border: 2px dashed var(--light-gray);
+      border-radius: 8px;
+      padding: 40px 20px;
+      margin: 20px 0;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    
+    .upload-area:hover {
+      border-color: var(--primary);
+      background-color: rgba(76, 175, 80, 0.05);
+    }
+    
+    .upload-area i {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+    
+    .upload-text {
+      margin-bottom: 20px;
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    .file-label {
+      background: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-block;
+      transition: var(--transition);
+      font-weight: 600;
+    }
+    
+    .file-label:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .selected-file {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+    
+    .predict-btn {
+      background: var(--secondary);
+      color: var(--dark);
+      border: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .predict-btn:hover {
+      background: #ffb300;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+    }
+    
+    .predict-btn:disabled {
+      background: var(--light-gray);
+      color: var(--gray);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .result-section {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 30px;
+    }
+    
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      color: var(--primary-dark);
+    }
+    
+    .section-title i {
+      color: var(--primary);
+    }
+    
+    .result-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .image-container {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--light);
+      min-height: 300px;
+    }
+    
+    .image-container img {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 10px;
+      object-fit: contain;
+      display: block;
+      transition: var(--transition);
+    }
+    
+    .prediction-result {
+      background: var(--light);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    
+    .disease-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+    }
+    
+    .confidence {
+      display: inline-block;
+      background: rgba(76, 175, 80, 0.1);
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    
+    .probabilities {
+      margin-top: 15px;
+    }
+    
+    .probabilities h4 {
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+    
+    .probability-list {
+      list-style: none;
+    }
+    
+    .probability-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .probability-item:last-child {
+      border-bottom: none;
+    }
+    
+    .probability-name {
+      color: var(--dark);
+    }
+    
+    .probability-value {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .upload-time {
+      text-align: right;
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-top: 15px;
+    }
+    
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      color: var(--gray);
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(76, 175, 80, 0.2);
+      border-left: 4px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .no-result {
+      text-align: center;
+      padding: 40px;
+      color: var(--gray);
+    }
+    
+    .no-result i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      color: var(--light-gray);
+    }
+    
+    /* History Section Styles */
+    .history-section {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: var(--card-shadow);
+    }
+    
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      padding: 10px 0;
+    }
+    
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease;
+      gap: 20px;
+    }
+    
+    .history-card {
+      min-width: 300px;
+      background: var(--light);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    
+    .history-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    
+    .history-image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .history-disease {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--primary-dark);
+    }
+    
+    .history-confidence {
+      font-size: 0.9rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    
+    .history-time {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: var(--transition);
+    }
+    
+    .carousel-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .carousel-btn.prev {
+      left: 10px;
+    }
+    
+    .carousel-btn.next {
+      right: 10px;
+    }
+    
+    .clear-history {
+      background: transparent;
+      border: 1px solid var(--light-gray);
+      color: var(--gray);
+      padding: 8px 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.9rem;
+    }
+    
+    .clear-history:hover {
+      background: #ffebee;
+      color: #f44336;
+      border-color: #f44336;
+    }
+    
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 30px 0;
+      margin-bottom: 20px;
+    }
+    
+    .modal-title {
+      font-size: 1.5rem;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      transition: var(--transition);
+    }
+    
+    .close-modal:hover {
+      color: var(--dark);
+    }
+    
+    .modal-body {
+      padding: 0 30px 30px;
+    }
+    
+    .modal-result-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .modal-image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--light);
+      border-radius: 10px;
+      padding: 20px;
+      min-height: 300px;
+    }
+    
+    .modal-image-container img {
+      max-width: 100%;
+      max-height: 350px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    
+    .modal-prediction-result {
+      background: var(--light);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    
+    @media (min-width: 768px) {
+      .result-card {
+        flex-direction: row;
+      }
+      
+      .image-container {
+        flex: 1;
+      }
+      
+      .prediction-result {
+        flex: 1;
+      }
+      
+      .modal-result-card {
+        flex-direction: row;
+      }
+      
+      .modal-image-container {
+        flex: 1;
+      }
+      
+      .modal-prediction-result {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-leaf"></i>Mobantay Og Sakit Sa Saging</h1>
+      <p class="subtitle">mo predict kung naay sakit ang saging or wala</p>
+    </header>
+    
+    <section class="upload-section">
+      <h2 class="section-title"><i class="fas fa-upload"></i>Ibutang ang Picture diri</h2>
+      
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div class="upload-area" id="uploadArea">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <div class="upload-text">
+            <p>e hagbong or e click ang Choose File button para maka upload</p>
+            <p class="file-types">Mo Supportar nig JPG, PNG, JPEG (Max 5MB)</p>
+          </div>
+          <input type="file" name="image" id="fileInput" class="file-input" accept="image/*" required />
+          <label for="fileInput" class="file-label">Pili og Payl</label>
+          <div class="selected-file" id="selectedFile">Wakay gi pili nga Payl</div>
+        </div>
+        
+        <button type="submit" class="predict-btn" id="predictBtn" disabled>
+          <i class="fas fa-search"></i> uploadar & predictar
+        </button>
+      </form>
+    </section>
+    
+    <section class="result-section">
+      <h2 class="section-title"><i class="fas fa-chart-line"></i> Karon nga Prediction</h2>
+      
+      <div id="result-container" class="no-result">
+        <i class="fas fa-seedling"></i>
+        <p>Way Result, pag upload sag picture</p>
+      </div>
+    </section>
+    
+    <section class="history-section">
+      <div class="history-header">
+        <h2 class="section-title"><i class="fas fa-history"></i> Mga Bago gi Predictar</h2>
+        <button class="clear-history" id="clearHistory">Clear History</button>
+      </div>
+      
+      <div class="carousel-container">
+        <button class="carousel-btn prev" id="prevBtn">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-btn next" id="nextBtn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <div class="carousel-track" id="carouselTrack">
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal" id="historyModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title"><i class="fas fa-info-circle"></i> Detalye sa mga prediction</h2>
+        <button class="close-modal" id="closeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-result-container">
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    
+    const uploadForm = document.getElementById("uploadForm");
+    const fileInput = document.getElementById("fileInput");
+    const uploadArea = document.getElementById("uploadArea");
+    const selectedFile = document.getElementById("selectedFile");
+    const predictBtn = document.getElementById("predictBtn");
+    const resultContainer = document.getElementById("result-container");
+    const carouselTrack = document.getElementById("carouselTrack");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const clearHistoryBtn = document.getElementById("clearHistory");
+    const historyModal = document.getElementById("historyModal");
+    const closeModal = document.getElementById("closeModal");
+    const modalResultContainer = document.getElementById("modal-result-container");
+    
+   
+    let currentPosition = 0;
+    const cardWidth = 320; 
+    
+    
+    fileInput.addEventListener("change", function() {
+      if (this.files && this.files[0]) {
+        const fileName = this.files[0].name;
+        selectedFile.textContent = `Selected: ${fileName}`;
+        predictBtn.disabled = false;
+      } else {
+        selectedFile.textContent = "No file selected";
+        predictBtn.disabled = true;
+      }
+    });
+    
+  
+    uploadArea.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      uploadArea.style.borderColor = "var(--primary)";
+      uploadArea.style.backgroundColor = "rgba(76, 175, 80, 0.05)";
+    });
+    
+    uploadArea.addEventListener("dragleave", () => {
+      uploadArea.style.borderColor = "var(--light-gray)";
+      uploadArea.style.backgroundColor = "transparent";
+    });
+    
+    uploadArea.addEventListener("drop", (e) => {
+      e.preventDefault();
+      uploadArea.style.borderColor = "var(--light-gray)";
+      uploadArea.style.backgroundColor = "transparent";
+      
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        fileInput.files = e.dataTransfer.files;
+        const fileName = e.dataTransfer.files[0].name;
+        selectedFile.textContent = `Selected: ${fileName}`;
+        predictBtn.disabled = false;
+      }
+    });
+    
+    
+    uploadArea.addEventListener("click", () => {
+      fileInput.click();
+    });
+    
+    
+    prevBtn.addEventListener("click", () => {
+      const trackWidth = carouselTrack.scrollWidth;
+      const containerWidth = carouselTrack.parentElement.clientWidth;
+      const maxPosition = trackWidth - containerWidth;
+      
+      currentPosition = Math.min(currentPosition + cardWidth, 0);
+      carouselTrack.style.transform = `translateX(${currentPosition}px)`;
+      
+      updateCarouselButtons();
+    });
+    
+    nextBtn.addEventListener("click", () => {
+      const trackWidth = carouselTrack.scrollWidth;
+      const containerWidth = carouselTrack.parentElement.clientWidth;
+      const maxPosition = trackWidth - containerWidth;
+      
+      currentPosition = Math.max(currentPosition - cardWidth, -maxPosition);
+      carouselTrack.style.transform = `translateX(${currentPosition}px)`;
+      
+      updateCarouselButtons();
+    });
+    
+ 
+    function updateCarouselButtons() {
+      const trackWidth = carouselTrack.scrollWidth;
+      const containerWidth = carouselTrack.parentElement.clientWidth;
+      const maxPosition = trackWidth - containerWidth;
+      
+      prevBtn.disabled = currentPosition >= 0;
+      nextBtn.disabled = currentPosition <= -maxPosition;
+      
+      prevBtn.style.opacity = prevBtn.disabled ? "0.5" : "1";
+      nextBtn.style.opacity = nextBtn.disabled ? "0.5" : "1";
+    }
+    
+   
+    clearHistoryBtn.addEventListener("click", () => {
+      if (confirm("Are you sure you want to clear all prediction history?")) {
+        localStorage.removeItem('bananaDiseaseHistory');
+        renderHistoryCarousel();
+        updateCarouselButtons();
+      }
+    });
+    
+    
+    closeModal.addEventListener('click', () => {
+      historyModal.style.display = 'none';
+    });
+    
+    
+    window.addEventListener('click', (e) => {
+      if (e.target === historyModal) {
+        historyModal.style.display = 'none';
+      }
+    });
+    
+    
+    uploadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      // Show loading state
+      resultContainer.innerHTML = `
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Uploading and analyzing image...</p>
+        </div>
+      `;
+      
+      const formData = new FormData(uploadForm);
+      
+      try {
+        const res = await fetch("/upload", { 
+          method: "POST", 
+          body: formData 
+        });
+        
+        const data = await res.json();
+
+        if (data.error) {
+          resultContainer.innerHTML = `
+            <div class="no-result">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p>Error: ${data.error}</p>
+            </div>
+          `;
+          return;
+        }
+
+        const resultData = {
+          link: data.uploaded_link,
+          result: data.prediction,
+          uploadedAt: new Date().toISOString()
+        };
+        
+        renderResult(resultData);
+        saveResultToStorage(resultData);
+        renderHistoryCarousel();
+        updateCarouselButtons();
+        
+        // Reset form
+        fileInput.value = '';
+        selectedFile.textContent = "No file selected";
+        predictBtn.disabled = true;
+        
+      } catch (err) {
+        console.error(err);
+        resultContainer.innerHTML = `
+          <div class="no-result">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Upload failed! Please try again.</p>
+          </div>
+        `;
+      }
+    });
+
+   
+    function saveResultToStorage(data) {
+      const history = JSON.parse(localStorage.getItem('bananaDiseaseHistory') || '[]');
+      history.unshift(data); 
+      
+      if (history.length > 10) {
+        history.pop();
+      }
+      localStorage.setItem('bananaDiseaseHistory', JSON.stringify(history));
+    }
+
+ 
+    function loadHistoryFromStorage() {
+      return JSON.parse(localStorage.getItem('bananaDiseaseHistory') || '[]');
+    }
+
+    
+    function renderResult(data) {
+  const confidencePercent = data.result.confidence; 
+
+  const probabilityItems = Object.entries(data.result.class_probabilities)
+    .map(([className, probability]) => {
+      return `
+        <li class="probability-item">
+          <span class="probability-name">${className}</span>
+          <span class="probability-value">${probability}</span>
+        </li>
+      `;
+    })
+    .join("");
+  
+  resultContainer.innerHTML = `
+    <div class="result-card">
+      <div class="image-container">
+        <img src="${data.link}" alt="Uploaded Banana Leaf" />
+      </div>
+      
+      <div class="prediction-result">
+        <div class="disease-name">${data.result.predicted_disease}</div>
+        <div class="confidence">Confidence: ${confidencePercent}</div>
+        
+        <div class="probabilities">
+          <h4>Class Probabilities:</h4>
+          <ul class="probability-list">
+            ${probabilityItems}
+          </ul>
+        </div>
+        
+        <div class="upload-time">
+          Analyzed: ${new Date(data.uploadedAt).toLocaleString()}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+    
+    function renderModalResult(data) {
+  
+  const confidencePercent = data.result.confidence;
+
+
+  const probabilityItems = Object.entries(data.result.class_probabilities)
+    .map(([className, probability]) => {
+      return `
+        <li class="probability-item">
+          <span class="probability-name">${className}</span>
+          <span class="probability-value">${probability}</span>
+        </li>
+      `;
+    })
+    .join("");
+  
+  modalResultContainer.innerHTML = `
+    <div class="modal-result-card">
+      <div class="modal-image-container">
+        <img src="${data.link}" alt="Uploaded Banana Leaf" />
+      </div>
+      
+      <div class="modal-prediction-result">
+        <div class="disease-name">${data.result.predicted_disease}</div>
+        <div class="confidence">Confidence: ${confidencePercent}</div>
+        
+        <div class="probabilities">
+          <h4>Class Probabilities:</h4>
+          <ul class="probability-list">
+            ${probabilityItems}
+          </ul>
+        </div>
+        
+        <div class="upload-time">
+          Analyzed: ${new Date(data.uploadedAt).toLocaleString()}
+        </div>
+      </div>
+    </div>
+  `;
+
+  historyModal.style.display = 'flex';
+}
+
+    
+
+    
+    function renderHistoryCarousel() {
+      const history = loadHistoryFromStorage();
+      
+      if (history.length === 0) {
+        carouselTrack.innerHTML = `
+          <div class="no-result" style="min-width: 100%; text-align: center;">
+            <i class="fas fa-clock"></i>
+            <p>No prediction history yet</p>
+          </div>
+        `;
+        return;
+      }
+      
+      const historyCards = history.map((item, index) => {
+        const confidencePercent = (item.result.confidence * 100).toFixed(1);
+        const time = new Date(item.uploadedAt).toLocaleDateString();
+        
+        return `
+          <div class="history-card" data-index="${index}">
+            <img src="${item.link}" alt="Banana Leaf" class="history-image" />
+            <div class="history-disease">${item.result.predicted_disease}</div>
+            <div class="history-confidence">Confidence: ${confidencePercent}%</div>
+            <div class="history-time">${time}</div>
+          </div>
+        `;
+      }).join('');
+      
+      carouselTrack.innerHTML = historyCards;
+      
+    
+      document.querySelectorAll('.history-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const index = parseInt(card.getAttribute('data-index'));
+          const history = loadHistoryFromStorage();
+          renderModalResult(history[index]);
+        });
+      });
+    }
+
+  
+    function loadInitialData() {
+      const history = loadHistoryFromStorage();
+      if (history.length > 0) {
+        renderResult(history[0]);
+      }
+      renderHistoryCarousel();
+      updateCarouselButtons();
+    }
+
+    
+    loadInitialData();
+  </script>
+</body>
+</html>
