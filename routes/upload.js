@@ -12,7 +12,7 @@ router.use(cors());
 
 const upload = multer({ dest: "uploads/" });
 //magabaan ang mo  gamit sa access_token (jk onli plz ayaw gamita ninyu limited ra api request ani per day)
-const ACCESS_TOKEN = "3f1b4cb7de3591424ccf18f7ab6b1d72c08b56e9";
+const ACCESS_TOKEN = "6134dc56a4555081aeeba3256a474e2564805aa6";
 const IMGUR_UPLOAD_URL = "https://api.imgur.com/3/image";
 
 const linksPath = path.join(__dirname, "../database/links.json");
@@ -66,5 +66,6 @@ router.post("/", upload.single("image"), async (req, res) => {
 });
 
 module.exports = router;
+
 
 
